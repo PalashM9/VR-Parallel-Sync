@@ -4,8 +4,16 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 public class DesktopPlayerController : NetworkBehaviour
 {
+    [Header("Movement")]
     public float moveSpeed = 4f;
-    public float rotateSpeed = 120f;
+
+    [Header("Fallback Spawn (only if tags not found)")]
+    public Vector3 hostSpawnPosition   = new Vector3(48.27f, 1.51f, -0.61f);
+    public Vector3 clientSpawnPosition = new Vector3(55.1f,  1.51f, -4.39f);
+    public float startYaw = 0f;
+
+    [Header("Camera")]
+    public Vector3 cameraOffset = new Vector3(0f, 3f, -6f);
 
     private CharacterController controller;
 
@@ -15,52 +23,91 @@ public class DesktopPlayerController : NetworkBehaviour
     }
 
     public override void OnNetworkSpawn()
-{
-    if (IsServer)
     {
-        // Server decides spawn positions
-        if (OwnerClientId == NetworkManager.Singleton.LocalClientId)
+        ulong serverId = NetworkManager.ServerClientId;
+        bool isHostPlayer = OwnerClientId == serverId;
+
+        // ---------- SERVER: choose spawn ----------
+        if (IsServer)
         {
-            // Host player
-            transform.position = new Vector3(-2f, 0f, 0f);
+            Transform spawnTransform = null;
+
+            if (isHostPlayer)
+            {
+                GameObject hostSpawn = GameObject.FindWithTag("HostSpawn");
+                if (hostSpawn != null) spawnTransform = hostSpawn.transform;
+            }
+            else
+            {
+                GameObject clientSpawn = GameObject.FindWithTag("ClientSpawn");
+                if (clientSpawn != null) spawnTransform = clientSpawn.transform;
+            }
+
+            Vector3 pos;
+            Quaternion rot;
+
+            if (spawnTransform != null)
+            {
+                pos = spawnTransform.position;
+                rot = spawnTransform.rotation; // <- uses your spawn Y rotation
+            }
+            else
+            {
+                pos = isHostPlayer ? hostSpawnPosition : clientSpawnPosition;
+                rot = Quaternion.Euler(0f, startYaw, 0f);
+            }
+
+            transform.SetPositionAndRotation(pos, rot);
+            Debug.Log($"Spawning {(isHostPlayer ? "HOST" : "CLIENT")} at {pos}");
         }
-        else
-        {
-            // Any client players
-            transform.position = new Vector3(2f, 0f, 0f);
-        }
+
+        // ---------- LOCAL OWNER: attach camera ----------
+        if (!IsOwner) return;
+
+        Camera existing = Camera.main;
+        if (existing != null)
+            existing.gameObject.SetActive(false);
+
+        GameObject camObj = new GameObject("PlayerCamera");
+        Camera cam = camObj.AddComponent<Camera>();
+        cam.tag = "MainCamera";
+
+        camObj.transform.SetParent(transform);
+        camObj.transform.localPosition = cameraOffset;
+
+        // Look along the capsule's forward direction
+        Vector3 lookTarget = transform.position + transform.forward * 10f;
+        camObj.transform.LookAt(lookTarget, Vector3.up);
     }
-
-    if (!IsOwner) return;
-
-    // Disable existing main camera
-    Camera existing = Camera.main;
-    if (existing != null)
-        existing.gameObject.SetActive(false);
-
-    // Create a top-down-ish camera
-    GameObject camObj = new GameObject("PlayerCamera");
-    Camera cam = camObj.AddComponent<Camera>();
-    cam.tag = "MainCamera";
-
-    camObj.transform.SetParent(transform);
-    camObj.transform.localPosition = new Vector3(0, 5f, -5f);
-    camObj.transform.localRotation = Quaternion.Euler(45f, 0f, 0f);
-}
-
-
 
     void Update()
     {
         if (!IsOwner) return;
 
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
-        float mouseX = Input.GetAxis("Mouse X");
+        float h = 0f;
+        float v = 0f;
 
-        transform.Rotate(Vector3.up, mouseX * rotateSpeed * Time.deltaTime);
+        bool isLocalHost   = IsServer;
+        bool isLocalClient = !IsServer;
 
-        Vector3 move = transform.forward * v + transform.right * h;
-        controller.SimpleMove(move * moveSpeed);
+        // Host = WASD, Client = arrow keys
+        if (isLocalHost)
+        {
+            if (Input.GetKey(KeyCode.A)) h -= 1f;
+            if (Input.GetKey(KeyCode.D)) h += 1f;
+            if (Input.GetKey(KeyCode.W)) v += 1f;
+            if (Input.GetKey(KeyCode.S)) v -= 1f;
+        }
+        else if (isLocalClient)
+        {
+            if (Input.GetKey(KeyCode.LeftArrow))  h -= 1f;
+            if (Input.GetKey(KeyCode.RightArrow)) h += 1f;
+            if (Input.GetKey(KeyCode.UpArrow))    v += 1f;
+            if (Input.GetKey(KeyCode.DownArrow))  v -= 1f;
+        }
+
+        // Move in capsule's local forward/right direction
+        Vector3 dir = (transform.forward * v + transform.right * h).normalized;
+        controller.Move(dir * moveSpeed * Time.deltaTime);
     }
 }
