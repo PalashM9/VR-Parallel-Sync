@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 6030698632021280674}
   - component: {fileID: -2826610755489320206}
   - component: {fileID: 6355060351578824221}
+  - component: {fileID: -6431590134998814263}
   m_Layer: 0
   m_Name: ConeObstacle
   m_TagString: Untagged
@@ -130,7 +131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3532043317
+  GlobalObjectIdHash: 2890857599
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -221,6 +222,21 @@ MonoBehaviour:
   radius: 5
   orbitSpeedDegrees: 45
   heightOffset: 0
+--- !u!114 &-6431590134998814263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 707334348040979868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f1be6c4e85c54849853909408125f3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ConeColorPulse
+  colorA: {r: 1, g: 0, b: 0, a: 1}
+  colorB: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  pulseSpeed: 1
 --- !u!1 &5295822320307641441
 GameObject:
   m_ObjectHideFlags: 0
