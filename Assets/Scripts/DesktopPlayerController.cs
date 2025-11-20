@@ -81,33 +81,27 @@ public class DesktopPlayerController : NetworkBehaviour
     }
 
     void Update()
+{
+    if (!IsOwner) return;   // only local player
+
+    float h = 0f;
+    float v = 0f;
+
+    // Accept BOTH WASD and Arrow keys
+    if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))  h -= 1f;
+    if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) h += 1f;
+    if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))    v += 1f;
+    if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))  v -= 1f;
+
+    // DEBUG: see if this ever fires on the client
+    if ((h != 0f || v != 0f) && Input.anyKey)
     {
-        if (!IsOwner) return;
-
-        float h = 0f;
-        float v = 0f;
-
-        bool isLocalHost   = IsServer;
-        bool isLocalClient = !IsServer;
-
-        // Host = WASD, Client = arrow keys
-        if (isLocalHost)
-        {
-            if (Input.GetKey(KeyCode.A)) h -= 1f;
-            if (Input.GetKey(KeyCode.D)) h += 1f;
-            if (Input.GetKey(KeyCode.W)) v += 1f;
-            if (Input.GetKey(KeyCode.S)) v -= 1f;
-        }
-        else if (isLocalClient)
-        {
-            if (Input.GetKey(KeyCode.LeftArrow))  h -= 1f;
-            if (Input.GetKey(KeyCode.RightArrow)) h += 1f;
-            if (Input.GetKey(KeyCode.UpArrow))    v += 1f;
-            if (Input.GetKey(KeyCode.DownArrow))  v -= 1f;
-        }
-
-        // Move in capsule's local forward/right direction
-        Vector3 dir = (transform.forward * v + transform.right * h).normalized;
-        controller.Move(dir * moveSpeed * Time.deltaTime);
+        Debug.Log($"MOVE INPUT on {(IsServer ? "HOST" : "CLIENT")}  h={h}, v={v}");
     }
+
+    Vector3 dir = (transform.forward * v + transform.right * h).normalized;
+    controller.Move(dir * moveSpeed * Time.deltaTime);
+}
+
+
 }
