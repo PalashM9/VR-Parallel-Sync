@@ -49,10 +49,10 @@ public class ConeLookAtHost : NetworkBehaviour
     if (!IsServer) return;
     if (pointer == null) return;
 
-    // 🔥 1. ALWAYS spin (continuous rotation)
+    
     pointer.Rotate(0f, 120f * Time.deltaTime, 0f, Space.Self);
 
-    // 🔥 2. ALSO rotate toward host (if host exists)
+    
     if (hostTransform != null)
     {
         Vector3 toHost = hostTransform.position - pointer.position;

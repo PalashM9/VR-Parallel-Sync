@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: -3000702483555842891}
   - component: {fileID: 6030698632021280674}
   - component: {fileID: -2826610755489320206}
+  - component: {fileID: 6355060351578824221}
   m_Layer: 0
   m_Name: ConeObstacle
   m_TagString: Untagged
@@ -129,7 +130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2890857599
+  GlobalObjectIdHash: 3532043317
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -203,6 +204,23 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   turnSpeedDegreesPerSecond: 180
   pointer: {fileID: 6951531060630759402}
+--- !u!114 &6355060351578824221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 707334348040979868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d58d46074ccdf4da1555e4dd587864, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OrbitingCone
+  isOrbiting: 0
+  target: {fileID: 0}
+  radius: 5
+  orbitSpeedDegrees: 45
+  heightOffset: 0
 --- !u!1 &5295822320307641441
 GameObject:
   m_ObjectHideFlags: 0
