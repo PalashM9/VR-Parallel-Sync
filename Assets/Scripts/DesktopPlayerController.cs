@@ -8,8 +8,8 @@ public class DesktopPlayerController : NetworkBehaviour
     public float moveSpeed = 4f;
 
     [Header("Fallback Spawn (only if tags not found)")]
-    public Vector3 hostSpawnPosition   = new Vector3(48.27f, 1.51f, -0.61f);
-    public Vector3 clientSpawnPosition = new Vector3(55.1f,  1.51f, -4.39f);
+    public Vector3 hostSpawnPosition   = new Vector3(48.27f, 1.3f, -0.61f);
+    public Vector3 clientSpawnPosition = new Vector3(55.1f,  1.3f, -4.39f);
     public float startYaw = 0f;
 
     [Header("Camera")]
