@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &2004588787941016332
+--- !u!1001 &445642892764886591
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -13,28 +13,16 @@ PrefabInstance:
       value: ClientCar
       objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: 0b65cdec419600c4cbb957059557dd53, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2774220344278030320, guid: 0b65cdec419600c4cbb957059557dd53, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2774220344278030320, guid: 0b65cdec419600c4cbb957059557dd53, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2774220344278030320, guid: 0b65cdec419600c4cbb957059557dd53, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -152.90677
       objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: 0b65cdec419600c4cbb957059557dd53, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1.366
       objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: 0b65cdec419600c4cbb957059557dd53, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.127
       objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: 0b65cdec419600c4cbb957059557dd53, type: 3}
       propertyPath: m_LocalRotation.w

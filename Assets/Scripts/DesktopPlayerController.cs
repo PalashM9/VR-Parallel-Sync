@@ -15,6 +15,10 @@ public class DesktopPlayerController : NetworkBehaviour
     [Header("Camera")]
     public Vector3 cameraOffset = new Vector3(0f, 3f, -6f);
 
+    [Header("Car Visuals")]
+    public GameObject hostCarObject;    // child used when this player is the host’s player
+    public GameObject clientCarObject;  // child used when this player is a client player
+
     private CharacterController controller;
 
     void Awake()
@@ -26,6 +30,13 @@ public class DesktopPlayerController : NetworkBehaviour
     {
         ulong serverId = NetworkManager.ServerClientId;
         bool isHostPlayer = OwnerClientId == serverId;
+
+        // ---------- Enable the correct car visual (runs on everyone) ----------
+        if (hostCarObject != null)
+            hostCarObject.SetActive(isHostPlayer);
+
+        if (clientCarObject != null)
+            clientCarObject.SetActive(!isHostPlayer);
 
         // ---------- SERVER: choose spawn ----------
         if (IsServer)
@@ -49,7 +60,7 @@ public class DesktopPlayerController : NetworkBehaviour
             if (spawnTransform != null)
             {
                 pos = spawnTransform.position;
-                rot = spawnTransform.rotation; // <- uses your spawn Y rotation
+                rot = spawnTransform.rotation;
             }
             else
             {
@@ -75,33 +86,24 @@ public class DesktopPlayerController : NetworkBehaviour
         camObj.transform.SetParent(transform);
         camObj.transform.localPosition = cameraOffset;
 
-        // Look along the capsule's forward direction
         Vector3 lookTarget = transform.position + transform.forward * 10f;
         camObj.transform.LookAt(lookTarget, Vector3.up);
     }
 
     void Update()
-{
-    if (!IsOwner) return;   // only local player
-
-    float h = 0f;
-    float v = 0f;
-
-    // Accept BOTH WASD and Arrow keys
-    if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))  h -= 1f;
-    if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) h += 1f;
-    if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))    v += 1f;
-    if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))  v -= 1f;
-
-    // DEBUG: see if this ever fires on the client
-    if ((h != 0f || v != 0f) && Input.anyKey)
     {
-        Debug.Log($"MOVE INPUT on {(IsServer ? "HOST" : "CLIENT")}  h={h}, v={v}");
+        if (!IsOwner) return;
+
+        float h = 0f;
+        float v = 0f;
+
+        // Both WASD and arrows work for everyone
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))  h -= 1f;
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) h += 1f;
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))    v += 1f;
+        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))  v -= 1f;
+
+        Vector3 dir = (transform.forward * v + transform.right * h).normalized;
+        controller.Move(dir * moveSpeed * Time.deltaTime);
     }
-
-    Vector3 dir = (transform.forward * v + transform.right * h).normalized;
-    controller.Move(dir * moveSpeed * Time.deltaTime);
-}
-
-
 }
