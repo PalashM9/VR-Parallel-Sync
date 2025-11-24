@@ -24,4 +24,11 @@ public class NetworkUI : MonoBehaviour
         if (ok && uiRoot != null)
             uiRoot.SetActive(false);
     }
+
+    public void StartVRClient()
+    {
+    PlayerTypeManager.WantsVR = true;  
+    NetworkManager.Singleton.StartClient();
+    }
+
 }

@@ -15,9 +15,9 @@ public class GateReactToPlayer : NetworkBehaviour
 
     [Header("Movement")]
     [Tooltip("How far to move the gate when opening (world units).")]
-    public Vector3 openOffset = new Vector3(0f, 4f, 0f);   // raise gate 4 units up
+    public Vector3 openOffset = new Vector3(0f, 16f, 0f);   // raise gate 4 units up
     [Tooltip("Speed of gate movement (units per second).")]
-    public float moveSpeed = 3f;
+    public float moveSpeed = 6f;
 
     private Vector3 _closedPos;
     private Vector3 _openPos;
