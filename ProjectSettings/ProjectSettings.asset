@@ -925,11 +925,11 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
-  cloudProjectId: d7eb19eb-416d-4794-b90e-1b3d50fbae1d
+  cloudProjectId: 28f8303b-cfe8-4894-9ced-2e089971942c
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: My project 2025-11-19_23-54-10
-  organizationId: palash9
+  projectName: VR-Parallel-Sync
+  organizationId: phuongnguyenthi0113
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
